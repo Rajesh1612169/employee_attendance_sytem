@@ -7,15 +7,22 @@ class AttendanceService
 {
     public function createAttendance($data)
     {
-        $attendance = new Attendance([
-            'emp_id' => $data->emp_id,
-            'time_in' => $data->time_in,
-            'time_out' => $data->time_out,
-            'status' => $data->status,
-        ]);
 
-       $status = $attendance->save();
-        return $status;
+        $dataArray = $data->all();
+
+        for ($i = 0; $i < count($dataArray); $i++) {
+                    $attendance = new Attendance([
+                'emp_id' => $dataArray[$i][0],
+                'time_in' => $dataArray[$i][1],
+                'time_out' => $dataArray[$i][2],
+                'status' => $dataArray[$i][3],
+            ]);
+
+            $status = $attendance->save();
+
+        }
+
+        return 1;
     }
 
 
@@ -23,7 +30,7 @@ class AttendanceService
     {
         $attendance = Attendance::all();
 //        dd($attendance);.
-        return $attendance;
+        return response()->json($attendance);
     }
 
 }
